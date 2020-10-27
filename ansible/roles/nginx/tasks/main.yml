@@ -1,0 +1,16 @@
+- include_vars: vars.yml
+
+- name: Clear subdomain confs from nginx
+  command: "rm -rf /etc/nginx/conf.d/*.conf"
+
+- name: Template subdomain confs for nginx
+  template:
+    src: "templates/nginx_subdomain.conf.j2"
+    dest: /etc/nginx/conf.d/{{ item.name }}.{{ DOMAIN }}.conf
+    force: true
+  with_items: "{{ SUBDOMAINS }}"
+
+- name: Restart nginx service
+  service:
+    name: nginx
+    state: restarted

@@ -1,0 +1,6 @@
+- name: Obtain cert for subdomains
+  command: "certbot --noninteractive --nginx -d {% for domain in SUBDOMAINS %}{{ domain.name }}.{{ DOMAIN }}{% if not loop.last %},{% endif %}{% endfor %}"
+  register: result
+  until: result is not failed
+  retries: 6
+  delay: 20

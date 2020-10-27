@@ -1,0 +1,18 @@
+#use this to deploy backend processes or controll a cluster... dont know yet
+# fyi use ansible docker_container module
+
+- name: Ensure docker dependencies
+  pip:
+    name: docker-py
+  ignore_errors: true
+
+- name: Ensure backend service
+  docker_container:
+    name: "{{ item.name }}"
+    image: "{{ item.docker.image }}"
+    state: "{% if item.state == 'enabled' %}started{% else %}stopped{% endif %}"
+    comparisons:
+      '*': ignore
+    ports:
+      - "{{ item.port }}:{{ item.docker.port }}"
+  with_items: "{{ SUBDOMAINS }}"

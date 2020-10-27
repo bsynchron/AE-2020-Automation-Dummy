@@ -1,0 +1,31 @@
+- name: Create DNS entry with GoDaddy
+  uri:
+    url: https://api.godaddy.com/v1/domains/{{ DOMAIN }}/records
+    method: PATCH
+    body_format: "json"
+    body: '[{"type":"CNAME","name":"{{ item.name }}","data":"@","ttl":600}]'
+    headers:
+      Authorization: "sso-key {{ GD_KEYPAIR }}"
+      Content-Type: "application/json"
+    status_code:
+      - 200
+      - 422 #duplicate entry
+  with_items: "{{ SUBDOMAINS }}"
+  when: item.state == "enabled"
+  register: response
+  changed_when: response.status == 200
+
+# - name: Delete DNS entry with GoDaddy
+#   uri:
+#     url: https://api.godaddy.com/v1/domains/{{ DOMAIN }}/records
+#     method: PATCH
+#     body_format: "json"
+#     body: '[{"type":"CNAME","name":"{{ item.name }}","data":"@","ttl":600}]'
+#     headers:
+#       Authorization: "sso-key {{ GD_KEYPAIR }}"
+#       Content-Type: "application/json"
+#     status_code:
+#       - 200
+#       - 422 #duplicate entry
+#   with_items: "{{ SUBDOMAINS }}"
+#   when: item.state == "disabled"

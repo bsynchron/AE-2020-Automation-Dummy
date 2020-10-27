@@ -1,0 +1,14 @@
+---
+- hosts: deploy
+  gather_facts: true
+  become: true
+
+  pre_tasks:
+    - include_vars: vars.yml
+
+  roles:
+    - docker #build backend
+    - firewall
+    - nginx #build proxy routing
+    - dns #add subdomain
+    - certbot #enable SSL

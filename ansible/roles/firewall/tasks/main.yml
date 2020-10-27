@@ -1,0 +1,6 @@
+- name: Handle firewall exceptions for exposed docker containers
+  firewalld:
+    port: "{{ item.port }}/tcp"
+    permanent: true
+    state: "{{ item.state }}"
+  with_items: "{{ SUBDOMAINS }}"

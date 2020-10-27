@@ -1,0 +1,5 @@
+[deploy]
+207.180.223.82
+
+[lo]
+127.0.0.1 ansible_connection=local

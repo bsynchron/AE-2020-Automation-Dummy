@@ -1,0 +1,34 @@
+DOMAIN: bsynchron.de
+PUBLIC_IP: "207.180.223.82"
+
+SUBDOMAINS:
+  - name: jenkins
+    port: 8880
+    state: enabled
+    docker:
+      image: jenkins:latest
+      port: 8080
+  - name: test
+    port: 8081
+    state: disabled
+    docker:
+      image: nginx:latest
+      port: 80
+  - name: sinusbot
+    port: 8087
+    state: enabled
+    docker:
+      image: sinusbot/docker:latest
+      port: 8087
+  - name: portainer
+    port: 9000
+    state: enabled
+    docker:
+      image: portainer/portainer:latest
+      port: 9000
+  - name: asynchron
+    port: 8082
+    state: enabled
+    docker:
+      image: nginx:latest
+      port: 80
